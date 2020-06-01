@@ -8,10 +8,6 @@ const BSAS = process.env.REACT_APP_BUENOS_AIRES_ID
 
 export default class StorePredictions extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   formatDate = d => {
     var date = new Date(d * 1000);
     var dd = date.getDate();
@@ -24,7 +20,7 @@ export default class StorePredictions extends Component {
     return(mm + '/' + dd + '/' + yyyy + ' - ' + hh);
   }
 
-  componentDidMount() {
+  handleStoreData = () => {
 
     axios.get( 'https://api.openweathermap.org/data/2.5/forecast?id=' + PERGAMINO + '&appid=' + KEY)
       .then(res => {
@@ -59,13 +55,25 @@ export default class StorePredictions extends Component {
       .catch(error => {
         console.log(error);
       });
+
+  }
+
+  async componentDidMount() {
+
+    try {
+      await firebase.login("jcalou@gmail.com", "123456");
+    } catch(error) {
+      console.log('error - ');
+      console.log(error.code);
+      console.log(error.message);
+    }
     
   }
 
   render() {
     return (
       <div>
-        Done!
+        <button onClick={this.handleStoreData} >Store Today Data</button>
       </div>
     );
   }
